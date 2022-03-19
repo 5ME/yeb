@@ -1,4 +1,4 @@
-package com.ygq.server.config;
+package com.ygq.server.config.security;
 
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;

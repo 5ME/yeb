@@ -3,7 +3,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306
+    url: jdbc:mysql://localhost:3306/yeb?serverTimezone=Asia/Shanghai
     username: root
     password: 123456
     hikari:
@@ -23,6 +23,22 @@ spring:
       connection-timeout: 30000
       # 测试连接是否可用的查询语句
       connection-test-query: SELECT 1
+  redis:
+    timeout: 10000ms
+    host: localhost
+    port: 6379
+    database: 0
+    # password:
+    lettuce:
+      pool:
+        # 最大连接数
+        max-active: 128
+        # 最大连接阻塞时间
+        max-wait: 10000ms
+        # 最大空闲连接
+        max-idle: 64
+        # 最小空闲连接
+        min-idle: 8
   security:
     oauth2:
       resourceserver:
@@ -48,7 +64,7 @@ jwt:
   tokenHeader: Authorization
   # JWT加解密使用的密钥
   secret: yeb-secret
-  # JWT的有效时长
-  expiration: 86400
+  # JWT的有效时长（这里设置的7天）
+  expiration: 604800
   # JWT负载中拿到开头
   tokenHead: Bearer

@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ygq.mapper.MenuRoleMapper">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ygq.server.mapper.MenuRoleMapper">
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.ygq.server.pojo.MenuRole">
-        <id column="id" property="id" />
-        <result column="mid" property="mid" />
-        <result column="rid" property="rid" />
+        <id column="id" property="id"/>
+        <result column="mid" property="mid"/>
+        <result column="rid" property="rid"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, mid, rid
+        id
+        , mid, rid
     </sql>
+
+    <!--批量插入角色菜单-->
+    <insert id="insertRecords">
+        INSERT INTO t_menu_role(mid, rid) VALUES
+        <foreach collection="mids" item="mid" separator=",">
+            (#{mid}, #{rid})
+        </foreach>
+    </insert>
 
 </mapper>
