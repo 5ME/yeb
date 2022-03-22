@@ -46,4 +46,20 @@ public interface IAdminService extends IService<Admin> {
      * @return 角色列表
      */
     List<Role> getRoles(Integer adminId);
+
+    /**
+     * 根据关键词查询操作员
+     *
+     * @param keywords 关键词
+     * @return 查询到的操作员列表
+     */
+    List<Admin> getAllAdmins(String keywords);
+
+    /**
+     * 更新操作员角色
+     *
+     * @param adminId 操作员id
+     * @param rids    角色id数组
+     */
+    boolean updateAdminRole(Integer adminId, Integer[] rids);
 }

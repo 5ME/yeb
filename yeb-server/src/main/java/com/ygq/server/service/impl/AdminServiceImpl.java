@@ -5,11 +5,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ygq.server.Result;
 import com.ygq.server.config.security.JwtUtil;
 import com.ygq.server.mapper.AdminMapper;
+import com.ygq.server.mapper.AdminRoleMapper;
 import com.ygq.server.mapper.RoleMapper;
 import com.ygq.server.pojo.Admin;
+import com.ygq.server.pojo.AdminRole;
 import com.ygq.server.pojo.Menu;
 import com.ygq.server.pojo.Role;
 import com.ygq.server.service.IAdminService;
+import com.ygq.server.utils.AdminUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +40,7 @@ import java.util.Map;
 @Service
 public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements IAdminService {
     @Autowired
-    AdminMapper adminMapper;
+    private AdminMapper adminMapper;
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
@@ -47,6 +51,8 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     private String tokenHead;
     @Autowired
     private RoleMapper roleMapper;
+    @Autowired
+    private AdminRoleMapper adminRoleMapper;
 
     @Override
     public Result login(String username, String password, String code,
@@ -89,5 +95,19 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     @Override
     public List<Role> getRoles(Integer adminId) {
         return roleMapper.getRoles(adminId);
+    }
+
+    @Override
+    public List<Admin> getAllAdmins(String keywords) {
+        return adminMapper.getAllAdmins(AdminUtils.getCurrentAdmin().getId(),
+                keywords);
+    }
+
+    @Transactional
+    @Override
+    public boolean updateAdminRole(Integer adminId, Integer[] rids) {
+        adminRoleMapper.delete(new QueryWrapper<AdminRole>().eq("adminId", adminId));
+        Integer res = adminRoleMapper.addAdminRole(adminId, rids);
+        return res == rids.length;
     }
 }

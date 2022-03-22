@@ -5,6 +5,7 @@ import com.ygq.server.mapper.MenuMapper;
 import com.ygq.server.pojo.Admin;
 import com.ygq.server.pojo.Menu;
 import com.ygq.server.service.IMenuService;
+import com.ygq.server.utils.AdminUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -31,8 +32,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
 
     @Override
     public List<Menu> getMenusByAdminId() {
-        Integer adminId =
-                ((Admin) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+        Integer adminId = AdminUtils.getCurrentAdmin().getId();
         // 从redis获取数据
         ValueOperations<String, Object> valueOps = redisTemplate.opsForValue();
         List<Menu> menus = (List<Menu>) valueOps.get("menu_" + adminId);

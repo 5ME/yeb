@@ -1,6 +1,7 @@
 package com.ygq.server.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
@@ -9,10 +10,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author Yin Guiqing
@@ -21,7 +23,7 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("t_department")
-@ApiModel(value="Department对象", description="")
+@ApiModel(value = "Department对象", description = "部门实体类")
 public class Department implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -45,5 +47,11 @@ public class Department implements Serializable {
     @ApiModelProperty(value = "是否上级")
     private Boolean isParent;
 
+    @ApiModelProperty(value = "子部门列表")
+    @TableField(exist = false)
+    private List<Department> children;
 
+    @ApiModelProperty(value = "存储过程的返回结果，受影响的行数")
+    @TableField(exist = false)
+    private Integer res;
 }

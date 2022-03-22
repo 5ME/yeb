@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @version 1.0
  * @date 2022-02-16 21:19
  */
-@MapperScan("com.ygq.server.mapper")
 @SpringBootApplication
 public class YebApplication {
     public static void main(String[] args) {

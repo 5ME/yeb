@@ -1,20 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ygq.server.mapper.DepartmentMapper">
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.ygq.server.pojo.Department">
-        <id column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="parentId" property="parentId" />
-        <result column="depPath" property="depPath" />
-        <result column="enabled" property="enabled" />
-        <result column="isParent" property="isParent" />
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="parentId" property="parentId"/>
+        <result column="depPath" property="depPath"/>
+        <result column="enabled" property="enabled"/>
+        <result column="isParent" property="isParent"/>
+    </resultMap>
+
+    <resultMap id="DepartmentWithChildren" type="com.ygq.server.pojo.Department"
+               extends="BaseResultMap">
+        <collection property="children" ofType="com.ygq.server.pojo.Department"
+                    select="com.ygq.server.mapper.DepartmentMapper.getAllDepartments"
+                    column="id">
+
+        </collection>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, parentId, depPath, enabled, isParent
+        id
+        , name, parentId, depPath, enabled, isParent
     </sql>
 
+    <!--获取所有部门-->
+    <select id="getAllDepartments" resultMap="DepartmentWithChildren">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_department
+        WHERE parentId = #{parentId}
+    </select>
+
+    <!--添加部门（使用存储过程）-->
+    <select id="addDepartment" statementType="CALLABLE">
+        <!--入参：部门名称、父部门id、enabled-->
+        <!--出参：受影响行数、此条记录的id-->
+        CALL addDep(#{name,mode=IN,jdbcType=VARCHAR},
+        #{parentId,mode=IN,jdbcType=INTEGER}, #{enabled,mode=IN,jdbcType=BOOLEAN},
+        #{res,mode=OUT,jdbcType=INTEGER}, #{id,mode=OUT,jdbcType=INTEGER})
+    </select>
+
+    <!--删除部门（使用存储过程）-->
+    <select id="deleteDepartment" statementType="CALLABLE">
+        <!--入参：部门id-->
+        <!--出参：受影响行数-->
+        CALL deleteDep(#{id,mode=IN,jdbcType=INTEGER},
+        #{res,mode=OUT,jdbcType=INTEGER})
+    </select>
 </mapper>
