@@ -1,13 +1,13 @@
 package com.ygq.server.pojo;
 
+import cn.afterturn.easypoi.excel.annotation.Excel;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -21,9 +21,11 @@ import java.time.LocalDateTime;
  * @since 2022-02-17
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
+@RequiredArgsConstructor
+@EqualsAndHashCode(callSuper = false, of = "name")
 @TableName("t_position")
-@ApiModel(value = "Position对象", description = "")
+@ApiModel(value = "Position对象", description = "职位实体类")
 public class Position implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -33,6 +35,8 @@ public class Position implements Serializable {
     private Integer id;
 
     @ApiModelProperty(value = "职位")
+    @Excel(name = "职位", width = 20)
+    @NonNull
     private String name;
 
     @ApiModelProperty(value = "创建时间")

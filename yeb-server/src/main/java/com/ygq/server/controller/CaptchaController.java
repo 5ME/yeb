@@ -26,7 +26,7 @@ public class CaptchaController {
     private DefaultKaptcha defaultKaptcha;
 
     @ApiOperation("验证码")
-    @GetMapping("/captcha")
+    @GetMapping(value = "/captcha", produces = "image/jpeg")
     public void captcha(HttpServletRequest request, HttpServletResponse response) {
         // 定义 response 输出类型为 image/jpeg 类型
         response.setDateHeader("Expires", 0);
@@ -43,21 +43,12 @@ public class CaptchaController {
         request.getSession().setAttribute("captcha", text);
         // 创建验证码图片
         BufferedImage image = defaultKaptcha.createImage(text);
-        ServletOutputStream outputStream = null;
-        try {
-            outputStream = response.getOutputStream();
+        // 流的形式写出去，这里改成了 try-with-resources 写法
+        try (ServletOutputStream outputStream = response.getOutputStream()) {
             ImageIO.write(image, "jpeg", outputStream);
             outputStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (outputStream != null) {
-                try {
-                    outputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
         // ****************生成验证码 End****************
         // 查看验证码： http://localhost:8081/captcha

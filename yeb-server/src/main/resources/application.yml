@@ -44,6 +44,12 @@ spring:
       resourceserver:
         jwt:
           jwk-set-uri:
+  # RabbitMQ 配置
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 
 mybatis-plus:
   # Mapper映射文件位置

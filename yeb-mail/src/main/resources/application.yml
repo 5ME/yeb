@@ -1,0 +1,22 @@
+server:
+  port: 8082
+spring:
+  mail:
+    # SMTP服务器地址
+    host: smtp.163.com
+    # 详见网易邮箱设置中的说明
+    # 网易SMTP的非SSL端口号为25，SSL端口号为465
+    port: 25
+    protocol: smtp
+    default-encoding: UTF-8
+    username: cplasfyin@163.com
+    # 授权码（详见网易邮箱设置）
+    password: MPVLARLJERFGTFEF
+
+  # RabbitMQ 配置
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+

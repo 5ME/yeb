@@ -5,6 +5,7 @@ import com.ygq.server.pojo.Employee;
 import com.ygq.server.pojo.ResultPage;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * <p>
@@ -27,4 +28,27 @@ public interface IEmployeeService extends IService<Employee> {
      */
     ResultPage getEmployeeByPage(Integer pageNo, Integer pageSize,
                                  Employee employee, LocalDate[] joinDateScope);
+
+    /**
+     * 获取工号，就是最大工号加1
+     *
+     * @return 工号
+     */
+    String getWorkID();
+
+    /**
+     * 新增员工
+     *
+     * @param employee 封装的员工对象
+     * @return {@code true} 表示添加成功，{@code false} 表示添加失败
+     */
+    boolean addEmployee(Employee employee);
+
+    /**
+     * 查询员工
+     *
+     * @param id 员工id（为null则查询所有）
+     * @return 查询到的员工列表
+     */
+    List<Employee> getEmployee(Integer id);
 }

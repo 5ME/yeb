@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * <p>
@@ -31,4 +32,12 @@ public interface EmployeeMapper extends BaseMapper<Employee> {
     IPage<Employee> getEmployeeByPage(Page<Employee> page,
                                       @Param("employee") Employee employee,
                                       @Param("joinDateScope") LocalDate[] joinDateScope);
+
+    /**
+     * 查询员工
+     *
+     * @param id 员工id（为null则查询所有）
+     * @return 查询到的员工列表
+     */
+    List<Employee> getEmployee(Integer id);
 }
